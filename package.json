@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "googleapis": "^112.0.0",
+    "path": "^0.12.7",
+    "run-func": "^3.0.0"
+  }
+}

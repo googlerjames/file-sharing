@@ -1,0 +1,12 @@
+{
+    "type": "service_account",
+    "project_id": "scan-offender-files",
+    "private_key_id": "f460fc684dcc1ce4cb1eaa0bfd3ac41a57060050",
+    "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC9J5M2hmjmkOGT\nuOQEmgxR6dB1oiYWEiZNTHlvdHRiz4Pytrots4kiJ68hOTUnE1ez2KouqAMVIGHa\nPqf0nFs4XAzKkkXE1ipmsYrzeDA3+FZqigKBLqs6TpFQfkiT86dOanyyiG82J3ao\nUNuQLg9mmYeNmfR8iQFbYxGRH91UPp/zXyDPd12aOH/YAgRm1nqFBcsbKC90bouk\nanWoHLkaPns/npqqwMKcgqLwqIUG+6sn3oi6PzphfnaHk2jrzDFYwlsEcDJTkNNy\n4bDTAVkLj2Y9FcM8AC8utKIXXgci7Q781gWOYIJ2jY1tSteU6ocjOttlE6ym2RwI\nhXDfPG4tAgMBAAECggEAEZHk/zoR8WTAx09zwqeqgEtXJS4YGpG6BBEX8I3hJ7J9\n36QwfAFCuiz0fAIL2WLXESoNeML7clFtNW//et2xLXWDbKeUmnmIO7y/GultlS1Y\nnZHPNL+ogQR+Q/tO84s83bBPf+fjaKTWxUCpfGWC4bVeHX2Q86ZoPVxg69mJXgNA\nPXTWyI93jnH5g7RK0puG8ar1Er8VkZ/rZaYHoi4FWRvYMhj25MoQrQOd5owoyrv9\nBoRYy0PBpgXwIfnIl3Wh/T3YGnAUB1BWaQaMMNYLA6FyBdCswfm5BDU5iaWCYlOB\ntcq8RjA+WT/zW7unBYjyHGkbROdX/eWBDXEAt9M7wwKBgQDmEcqYoabGPYgfy2ek\n3ai0VKP7DMddjgXs9dY+O3fm8ROhnMXpnAg++dXYlhkoPEw9fYqPNzYp5oHcJPIZ\n4A/U4KHRpythvSVjGfVZ2s6o+I62g51FYMC2Y4Eo6vufkuH5aUrhG7ckx2viShm3\ngxmO7g8DRTuItPDkrKirYA78ewKBgQDSeUNxY+ftDK5buzIfKAVRD+ZlnEfedxgG\nC9tA+5Opd/0FKe+sltQKI88BJHSvtFfXXcZzsXszb6Dw701eDHZYL2G50ao6Wzw0\nFzIOHe5bef49qi0LdwO23hKpTxOS/V2czrcFtccuJJ24sSSFAsiYRNkYvS6rbk0a\nvmmEd+zjdwKBgDEFYXGcH/jla3e6016hjCzATCBV3LTmagTPbNLdwPKIM3KgANuB\nz4/7k8EOWlXkYypG8ZsKXJQY9Vp+1McGotjs9A3D3M56itjO0yROJvKB44aoDH6X\n2vgBw6eAShT6KwQFl1rXmPJRO39/4nLjkDKQLsq3mbPLOfi/gUDius65AoGAYIQV\nJlk/EJhBGHWmTV1H2t1ktPHOjzijvpoPSCRVmWAZmhWZ/9YGlEPJeGekTrJvmaY6\nC/G2YmbtMa87Fka2uke4E8MOwcX2vJhqbsjQ9gfiS5rPHzPLcz8w5Y0Kl9wx4md0\nzFyIYyONZBVvfsNBA3qG525RiXGCUCJDNujbq48CgYEA28ttmgyfhcK+WrP3MeoJ\nS4QdQnGZhqsJrYluvSJRRPvzADoQ/FZeTFGrdhD17nznWRt7U0WFXdclSmL9yJq7\nq6uHg/arxtHveTb48EzEjnCKT/xzrflSkcLOiCyHv7hZ35q716SqSwwfe15X8sMa\nTJsvK5juSXedKQap2z8pedc=\n-----END PRIVATE KEY-----\n",
+    "client_email": "scan-offender-files-service-ac@scan-offender-files.iam.gserviceaccount.com",
+    "client_id": "113979744660253886419",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/scan-offender-files-service-ac%40scan-offender-files.iam.gserviceaccount.com"
+  }
