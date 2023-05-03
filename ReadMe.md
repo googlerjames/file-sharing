@@ -27,27 +27,29 @@ If the script finds any violations of the sharing policy, it will print a messag
 
 Here are some of the key functions in the code:
 
-listUsersInOu(): This function lists all of the users in an OU.
-listFilesByUser(): This function lists all of the files that a user has access to.
-getSharing(): This function checks the sharing permissions of a file.
-deletePermission(): This function deletes a permission for a given user and file.
-updatePermission(): This function updates a permission for a given user and file.
+- listUsersInOu(): This function lists all of the users in an OU.
+- listFilesByUser(): This function lists all of the files that a user has access to.
+- getSharing(): This function checks the sharing permissions of a file.
+- deletePermission(): This function deletes a permission for a given user and file.
+- updatePermission(): This function updates a permission for a given user and file.
 
 # Sharing Policies
 The sharing policies are as follows:
 
-Multiple Offenders can only view shared documents. They cannot edit or own documents shared with other Offenders.
-Staff can edit and own documents.
-Class emails cannot be editors.
-If a document is owned by a staff member and has any offenders as editors, the offenders will be downgraded to viewers.
+- Multiple Offenders can only view shared documents. They cannot edit or own documents shared with other Offenders.
+- Staff can edit and own documents.
+- Class emails cannot be editors.
+- If a document is owned by a staff member and has any offenders as editors, the offenders will be downgraded to viewers.
 
 # Setup
-Clone the repo
-Create a GCP Project
-Enable Drive, Classroom and Admin SDK APIs
-Grant Domain Wide Auth in Workspace
-Allow API usage in Drive App
-download the privatekey.json and put it in the root
-Modify the Customer Settings at the beginning of the index.js file
-$ npm install
-$ run-func index.js checkSharing
+- Clone the repo
+- Create a GCP Project
+- Enable Drive, Classroom and Admin SDK APIs
+- Grant Domain Wide Auth in Workspace
+- Allow API usage in Drive App
+- download the privatekey.json and put it in the root
+- Modify the Customer Settings at the beginning of the index.js file
+```
+npm install
+run-func index.js checkSharing
+```
