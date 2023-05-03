@@ -18,13 +18,25 @@
  * Authored by James Ferreira
  */
 
+/*
+ * Customer Specific Settings
+ */
+const offenderOuPath = '/Edu.chrome.drc.ohio.gov/SB Inmate Internet/Users/Offenders'
+const staffOuPath = '/Edu.chrome.drc.ohio.gov/SB Inmate Internet/Users/Staff/ODRC Teachers/00SB Meetings SB/0SB2 Teachers Users'
+const customerId = 'C03drr2ko'
+const modifyPermissions = false
+
+
+/**
+ * APP CODE
+ */
 var gAuth = require('./googleAuth');
 const {google} = require('googleapis');
 
 /**
- * Lists the in an OU.
- *
+ * Lists the users in an OU.
  * @param {String} ouPath the path of the OU 
+ * @returns {Array} the email addresses for users in the OU
  */
 async function listUsersInOu(ouPath) {
 
@@ -34,7 +46,7 @@ async function listUsersInOu(ouPath) {
     let NextPageToken = "";
     do {
         const res = await service.users.list({
-            customer: 'C03drr2ko',
+            customer: customerId,
             maxResults: 500,
             orderBy: 'email',
             query: "orgUnitPath='"+ouPath+"'",
@@ -57,6 +69,11 @@ async function listUsersInOu(ouPath) {
     return ouUsers
   }
 
+/**
+ * Lists the files for a given user.
+ * @param {String} userEmail the users email address 
+ * @returns {Object Array} Array of file objects with fields: id, name, owners[], permissions[]
+ */
 async function listFilesByUser(userEmail){
 
     const auth = await gAuth.getAuth(userEmail)
@@ -89,33 +106,11 @@ async function listFilesByUser(userEmail){
     return files
 }
 
-async function getGroupMembers(groupKey){
-    const auth = await gAuth.getAuth()
-    const service = google.admin({version: 'directory_v1', auth});
-    var groupMembers = [];
-    let NextPageToken = "";
-    do {
-        const res = await service.members.list({
-            groupKey: "offenders.in.fmc@chrome.drc.ohio.gov",
-            pageToken: NextPageToken || "",
-        });
-
-        const members = res.data.members;
-        if (!members || members.length === 0) {
-            console.log('No members found.');
-            return groupMembers;
-        }
-    
-        //console.log('Users:');
-        members.forEach((member) => {
-            groupMembers.push(member.email);
-        });
-
-        NextPageToken = res.data.nextPageToken;
-    } while (NextPageToken);
-    return groupMembers
-}
-
+/**
+ * Lists the class emails for a given user.
+ * @param {String} user the users email address 
+ * @returns {Array} Array of emails for all of the users classes
+ */
 async function getClassEmails(user){
     const auth = await gAuth.getAuth(user)
     const service = google.classroom({version: 'v1', auth});
@@ -142,7 +137,15 @@ async function getClassEmails(user){
 
 }
 
+/**
+ * Deletes permissions for a given user and file.
+ * @param {String} fileId  
+ * @param {String} permissionId
+ * @param {String} ownerEmail
+ * @returns {Number} 200 for success, 500 for failure
+ */
 async function deletePermission(fileId, permissionId, ownerEmail){
+    if(modifyPermissions === false){return}
     try{
         const auth = await gAuth.getAuth(ownerEmail)
         const service = await google.drive({version: 'v3', auth});
@@ -158,7 +161,16 @@ async function deletePermission(fileId, permissionId, ownerEmail){
     }
 }
 
+/**
+ * Updates permissions for a given user and file.
+ * @param {String} fileId  
+ * @param {String} permissionId
+ * @param {String} ownerEmail
+ * @param {String} role the new role name [reader, writer]
+ * @returns {Number} 200 for success, 500 for failure
+ */
 async function updatePermission(fileId, permissionId, ownerEmail, role){
+    if(modifyPermissions === false){return}
     try{
         const auth = await gAuth.getAuth(ownerEmail)
         const service = await google.drive({version: 'v3', auth});
@@ -272,11 +284,14 @@ async function getSharing(file, staff, offenders, classEmails) {
   
   }
 
+/**
+ * Starts and runs the app
+ */
 const checkSharing = async () => {
     console.log('Starting App '+ new Date().toISOString())
     
-    const offenders = await listUsersInOu('/Edu.chrome.drc.ohio.gov/SB Inmate Internet/Users/Offenders')
-    const staff = await listUsersInOu('/Edu.chrome.drc.ohio.gov/SB Inmate Internet/Users/Staff/ODRC Teachers/00SB Meetings SB/0SB2 Teachers Users')
+    const offenders = await listUsersInOu(offenderOuPath)
+    const staff = await listUsersInOu(staffOuPath)
 
     console.log('Count Offenders: '+ offenders.length)
     console.log('Count Staff: '+ staff.length)   
@@ -296,13 +311,7 @@ const checkSharing = async () => {
         //console.log(userFiles)
     }
 
-
-    //Testing function
-    // var userFiles = await listFilesByUser('scan.offender.files@chrome.drc.ohio.gov')
-    // userFiles.forEach(function(file){
-    //     console.log(file.name)
-    // })
-    
+    console.log('Finished Processing '+ new Date().toISOString())
 }
 
 module.exports = { checkSharing }
