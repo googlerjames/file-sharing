@@ -21,9 +21,9 @@
 /*
  * Customer Specific Settings
  */
-const offenderOuPath = '/Edu.chrome.drc.ohio.gov/SB Inmate Internet/Users/Offenders'
-const staffOuPath = '/Edu.chrome.drc.ohio.gov/SB Inmate Internet/Users/Staff/ODRC Teachers/00SB Meetings SB/0SB2 Teachers Users'
-const customerId = 'C03drr2ko'
+const offenderOuPath = '/replace/ou/path'
+const staffOuPath = '/replace/ou/path'
+const customerId = '<Replace with Customer ID>'
 const modifyPermissions = false
 
 
