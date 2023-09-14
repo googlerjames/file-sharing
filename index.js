@@ -21,9 +21,9 @@
 /*
  * Customer Specific Settings
  */
-const offenderOuPath = '/replace/ou/path'
-const staffOuPath = '/replace/ou/path'
-const customerId = '<Replace with Customer ID>'
+const offenderOuPath = '/Edu.chrome.drc.ohio.gov/SB Inmate Internet/Users/Offenders/00SB Meetings SB'
+const staffOuPath = '/Edu.chrome.drc.ohio.gov/SB Inmate Internet/Users/Staff/ODRC Teachers/00SB Meetings SB'
+const customerId = 'C03drr2ko'
 const modifyPermissions = false
 
 
@@ -126,10 +126,11 @@ async function getClassEmails(user){
             console.log('No courses found.');
             return classMembers;
         }
-        console.log('Courses:');
+        //Change
         courses.forEach((course) => {
             classMembers.push(course.courseGroupEmail);
         });
+        console.log(courses.length + ' Courses');
 
         NextPageToken = res.data.nextPageToken;
     } while (NextPageToken);
@@ -205,6 +206,10 @@ async function getSharing(file, staff, offenders, classEmails) {
 
     var acls = file.permissions
     //console.log(acls)
+    if(!acls){
+        console.error('Issue reading file permissions for' + file.name + ' ID: ' + file.id)
+        return 
+    }
     acls.forEach(acl => {
         switch(acl.role) {
             case 'owner':
@@ -231,9 +236,10 @@ async function getSharing(file, staff, offenders, classEmails) {
     var moreThanOneEditor = false;
     var testResult = {sharing:'No Sharing Issues', name: file.name};
   
-  
+    //Check the editors
     for(var e = 0; e < editors.length; e++){
-         
+        
+        //Check if the class group email is an editor
         if(classEmails.indexOf(editors[e].email) !=-1){
             testResult.sharing = "Rule Violation. Class Email can't be an Editor"
             console.log(testResult)
@@ -241,8 +247,9 @@ async function getSharing(file, staff, offenders, classEmails) {
             console.log('Deleting permission for: ', editors[e].email, ' id: '+editors[e].id)
 
             await deletePermission(file.id, editors[e].id, owners[0].email)
+            //await updatePermission(file.id, editors[e].id, owners[0].email, 'reader')
               
-            return testResult       
+            //return testResult       
         }    
 
         if(staff.indexOf(editors[e].email) !=-1){
@@ -251,8 +258,8 @@ async function getSharing(file, staff, offenders, classEmails) {
         if(offenders.indexOf(editors[e].email) !=-1){
             offenderIsEditor +=1
         }
-        }
-  
+    }
+      
     for(var v = 0; v < viewers.length; v++){
       if(offenders.indexOf(viewers[v].email) !=-1){
         offenderIsViewer +=1
@@ -266,12 +273,23 @@ async function getSharing(file, staff, offenders, classEmails) {
       offenderIsOwner = true
     }
 
+    //Remove all classes if an offender owns the file
+    if( offenderIsOwner && classEmails.length > 0){
+        for(var c = 0; c < classEmails.length; c++){
+            //console.log(`File owned by Offender ${owners[0].email}. Deleting permission for class" ${classEmails[c]}`)
+            await deletePermission(file.id, classEmails[c], owners[0].email)
+            testResult.sharing = "Rule Violation. Class Email is not allowed on files owned by Offenders"
+        }  
+    }
+
     var totalOffenders = offenderIsEditor + offenderIsViewer
+    
+    //Check if files owned by the staff are shared to offenders with view only permission
     if((staffIsEditor >=1 || staffIsOwner) && (offenderIsEditor > 0 && totalOffenders > 1 || offenderIsOwner && totalOffenders >= 1)){
       testResult.sharing = 'Rule Violation. Documents with Teacher Ownership must be shared as View Only for Offenders'
-      console.log(testResult)
+      //console.log(testResult)
       for(var e = 0; e < editors.length; e++){
-        //Set Editor to Viewer
+        //Set any Offender Editor to Viewer
         if(offenders.indexOf(editors[0].email) !=-1){
             await updatePermission(file.id, editors[e].id, owners[0].email, 'reader')
                         
@@ -282,7 +300,7 @@ async function getSharing(file, staff, offenders, classEmails) {
   
     return testResult
   
-  }
+}
 
 /**
  * Starts and runs the app
@@ -302,11 +320,14 @@ const checkSharing = async () => {
         const classEmails = await getClassEmails(user)
         var userFiles = await listFilesByUser(user)
         console.log(userFiles.length +" Files for:" + user)
-        userFiles.forEach(function(file){
+        userFiles.forEach(async function(file){
             console.log('--------------')
             console.log('File Name: '+ file.name)
             console.log('File ID: '+ file.id)
-            getSharing(file, staff, offenders, classEmails) 
+            const result = await getSharing(file, staff, offenders, classEmails)
+            if(result && result.sharing !== 'No Sharing Issues'){
+                console.info(result)
+            } 
         })
         //console.log(userFiles)
     }
